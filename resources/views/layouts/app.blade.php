@@ -28,7 +28,7 @@
             </header>
 
             <!-- Page Content -->
-            <main>
+            <main id="app">
                 @yield('content')
             </main>
         </div>
