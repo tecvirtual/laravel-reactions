@@ -19,6 +19,8 @@ Route::get('/', function () {
 });
 
 Route::get('/posts/{post}',[PostsController::class, 'show']);
+Route::post('/posts/{post}/reaction',[ReactionsController::class, 'toggle'])->middleware('auth');
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
