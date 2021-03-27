@@ -10,7 +10,9 @@
                 </div>                
 
              <div>
-                <reactions-component></reactions-component>
+                <reactions-component 
+                :reacted='@json($post->reacted())'
+                ></reactions-component>
             </div>
 
         </div>  
