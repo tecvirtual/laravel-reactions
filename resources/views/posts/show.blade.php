@@ -10,8 +10,11 @@
                 </div>                
 
              <div>
-                <reactions-component 
-                :reacted='@json($post->reacted())'
+                <reactions-component
+                :summary='@json($post->reactionSummary())'
+                @auth
+                    :reacted='@json($post->reacted())'
+                @endauth                
                 ></reactions-component>
             </div>
 

@@ -1,24 +1,13 @@
 <template>
 <div class="margin-top d-flex conten-raction" >
-    <div>
-        <img class="px-1"
-        style="width: 30px"
-        src="/images/reactions/reaction-like.png"/>
-        <span class="px-1">2</span>
+    <div class="px-1" 
+    v-for="(count, reaction) in reactions_summary" 
+    :key="reaction"
+    v-show="count">
+        <img 
+        style="width: 30px" :src="image(reaction)" />
+        <span class="px-1">{{ count }}</span>
     </div>
-    <div>
-        <img class="px-1"
-        style="width: 30px"
-        src="/images/reactions/reaction-happy.png"/>
-        <span class="px-1">2</span>
-    </div>
-    <div>
-        <img class="px-1"
-        style="width: 30px"
-        src="/images/reactions/reaction-surprise.png"/>
-        <span class="px-1">2</span>
-    </div>
-
 
 </div>
 	<div class="border-top position-relative">
@@ -46,12 +35,13 @@
 <script>
 	
 	export default {
-        props: ["reacted"],
+        props: ["summary", "reacted"],
         data(){
             return{
                 show_reaction_types: false,
                 types: ["like","love","happy","angry","sad","surprise"],
-                auth_reaction: null,
+                reactions_summary: { ...this.summary},
+                auth_reaction: this.reacted ? this.reacted.type : null,
             }
         },
 
@@ -61,15 +51,40 @@
             },
             toggleRaction(reaction){
                 let path = window.location.href;
+                let old_reaction = this.auth_reaction;
 
                 axios.post(path+'/reaction', {reaction});
                  
                 this.show_reaction_types = false;
 
-                this.auth_reaction = reaction;
+                this.resetReactionsSummary(reaction, this.auth_reaction);
+                console.log(this.auth_reaction);
 
+                if(this.auth_reaction === reaction){
+                    this.auth_reaction = null;
+                }else{
+                    this.auth_reaction = reaction;
+                }
+            },
+            
+
+
+            resetReactionsSummary(new_reaction, old_reaction) {
+            if(old_reaction){
+                this.reactions_summary[old_reaction]--;
             }
-        },
+
+                if(new_reaction && new_reaction !== old_reaction){
+                 if(!this.reactions_summary[new_reaction]){
+                    this.reactions_summary[new_reaction] = 1;
+                    return;
+                }
+                this.reactions_summary[new_reaction]++;
+                }
+            },
+            
+        }
+        
 	}
 
 </script>
